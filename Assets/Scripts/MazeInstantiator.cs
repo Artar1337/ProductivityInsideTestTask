@@ -8,6 +8,8 @@ public class MazeInstantiator : MonoBehaviour
     private GameObject wallX, wallZ;
     [SerializeField]
     private float wallLength;
+    [SerializeField]
+    private AISurfaceBuilder aiBuilder;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +18,7 @@ public class MazeInstantiator : MonoBehaviour
         gen.GenerateMaze();
         gen.OutputMaze();
         InstantiateMaze(gen);
+        aiBuilder.BakeAiSurface();
     }
 
     private void InstantiateMaze(MazeGenerator maze)
