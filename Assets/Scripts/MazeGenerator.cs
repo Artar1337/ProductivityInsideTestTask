@@ -17,36 +17,6 @@ public class MazeGenerator : MonoBehaviour
     public bool[,] VerticalWalls { get => verticalWalls; }
     public bool[,] HorizontalWalls { get => horizontalWalls; }
 
-    public void OutputMaze()
-    {
-        string s = "Vertical:\n";
-        for(int i = 0; i < rows; i++)
-        {
-            for(int j = 0; j < columns; j++)
-            {
-                if(verticalWalls[i,j])
-                s += "1 ";
-                else
-                    s += "0 ";
-            }
-            s += "\n";
-        }
-        Debug.LogWarning(s);
-        s = "Horizontal:\n";
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < columns; j++)
-            {
-                if (horizontalWalls[i, j])
-                    s += "1 ";
-                else
-                    s += "0 ";
-            }
-            s += "\n";
-        }
-        Debug.LogWarning(s);
-    }
-
     public void GenerateMaze()
     {
         // init variables

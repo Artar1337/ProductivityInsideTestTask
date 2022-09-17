@@ -16,7 +16,6 @@ public class MazeInstantiator : MonoBehaviour
     {
         MazeGenerator gen = GetComponent<MazeGenerator>();
         gen.GenerateMaze();
-        gen.OutputMaze();
         InstantiateMaze(gen);
         aiBuilder.BakeAiSurface();
     }
