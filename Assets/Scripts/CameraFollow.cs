@@ -55,7 +55,6 @@ public class CameraFollow : MonoBehaviour
         float z = x / resolutionProportion;
         xBorder = new Vector2(-x, x);
         zBorder = new Vector2(-z, z);
-        Debug.Log(zBorder);
     }
 
     // updating only X and Z coords!
