@@ -21,6 +21,15 @@ public class Resources : MonoBehaviour
 
     private System.Random rng;
 
+    [SerializeField]
+    private ScriptableWeapon[] weapons;
+    [SerializeField]
+    private ScriptableStats[] stats;
+
+    private Dictionary<string, ScriptableWeapon> weaponDictionary;
+    private Dictionary<string, ScriptableStats> statsDictionary;
+    
+
     public float GetRandomFloat(float min, float max)
     {
         float range = max - min;
@@ -42,6 +51,31 @@ public class Resources : MonoBehaviour
     void Start()
     {
         rng = new System.Random();
+        weaponDictionary = new Dictionary<string, ScriptableWeapon>();
+        statsDictionary = new Dictionary<string, ScriptableStats>();
+
+        foreach(ScriptableWeapon obj in weapons)
+        {
+            weaponDictionary.Add(obj.Name, obj);
+        }
+
+        foreach (ScriptableStats obj in stats)
+        {
+            statsDictionary.Add(obj.Name, obj);
+        }
+
+        weapons = null;
+        stats = null;
+    }
+
+    public ScriptableWeapon GetWeaponByName(string name)
+    {
+        return weaponDictionary[name];
+    }
+
+    public ScriptableStats GetStatsByName(string name)
+    {
+        return statsDictionary[name];
     }
 
 }

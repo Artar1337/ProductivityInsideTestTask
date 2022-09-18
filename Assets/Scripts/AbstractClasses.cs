@@ -1,136 +1,133 @@
 using UnityEngine;
 
-public enum EEnemy
-{
-    Red,
-    Blue
-}
+namespace AbstractFactory { 
 
-public abstract class Weapon
-{
-    private float damage;
-    public float Damage { get => damage; set => damage = value; }
-    private float range;
-    public float Range { get => range; set => range = value; }
-
-    public abstract void Hit();
-}
-
-public abstract class Enemy
-{
-    private float health;
-    public float Health { get => health; set => health = value; }
-
-    private float chaseDistance;
-    public float ChaseDistance { get => chaseDistance; set => chaseDistance = value; }
-
-    private Color enemyColor;
-    public Color EnemyColor { get => enemyColor; set => enemyColor = value; }
-
-    private bool isDead = false;
-    public bool IsDead { get => isDead; }
-
-    public void RecieveHit(float value)
+    public enum EEnemy
     {
-        Health -= value;
-        if(Health <= 0)
+        Red,
+        Blue
+    }
+
+    public abstract class Weapon
+    {
+        public ScriptableWeapon weapon;
+        public abstract void Hit();
+    }
+
+    public abstract class Enemy
+    {
+        public ScriptableStats stats;
+
+        public void RecieveHit(float value)
         {
-            isDead = true;
-            Death();
+            stats.Health -= value;
+            if(stats.Health <= 0)
+            {
+                stats.IsDead = true;
+                Death();
+            }
+        }
+
+        public abstract void Death();
+    }
+
+    public class Fist : Weapon
+    {
+        public Fist(Transform origin)
+        {
+            weapon = Resources.instance.GetWeaponByName("Fist");
+        }
+
+        public override void Hit()
+        {
+            // hits the fist, no weapon shown
+
         }
     }
 
-    public abstract void Death();
-}
-
-public class Fist : Weapon
-{
-    public Fist()
+    public class Bat : Weapon
     {
-        Damage = 5f;
-        Range = 1f;
+        public Bat(Transform origin)
+        {
+            weapon = Resources.instance.GetWeaponByName("Bat");
+            origin.GetComponent<WeaponInstantiator>().InstantiateWeapon();
+        }
+
+        public override void Hit()
+        {
+            // hits the bat, weapon shown
+
+        }
     }
 
-    public override void Hit()
+    public class RedEnemy : Enemy
     {
-        // hits the fist, no weapon shown
+        public RedEnemy()
+        {
+            stats = Resources.instance.GetStatsByName("RedEnemy");
+        }
 
-    }
-}
-
-public class Bat : Weapon
-{
-    public Bat()
-    {
-        Damage = 25f;
-        Range = 3f;
+        public override void Death()
+        {
+            Debug.Log("Cringanyl");
+        }
     }
 
-    public override void Hit()
+    public class BlueEnemy : Enemy
     {
-        // hits the bat, weapon shown
+        public BlueEnemy()
+        {
+            stats = Resources.instance.GetStatsByName("BlueEnemy");
+        }
 
-    }
-}
-
-public class RedEnemy : Enemy
-{
-    public RedEnemy(float health)
-    {
-        Health = health;
-        EnemyColor = new Color(1, 0, 0);
-        ChaseDistance = 100f;
+        public override void Death()
+        {
+            Debug.Log("Slovil cringe");
+        }
     }
 
-    public override void Death()
+    public abstract class EnemyFactory
     {
-        Debug.Log("Cringanyl");
-    }
-}
-
-public class BlueEnemy : Enemy
-{
-    public BlueEnemy(float health)
-    {
-        Health = health;
-        EnemyColor = new Color(0, 0, 1);
-        ChaseDistance = 150f;
+        public abstract Enemy CreateEnemy();
+        public abstract Weapon CreateWeapon(Transform origin);
     }
 
-    public override void Death()
+    public class RedEnemyFactory : EnemyFactory
     {
-        Debug.Log("Slovil cringe");
-    }
-}
+        public override Enemy CreateEnemy()
+        {
+            return new RedEnemy();
+        }
 
-public abstract class EnemyFactory
-{
-    public abstract Enemy CreateEnemy();
-    public abstract Weapon CreateWeapon();
-}
-
-public class RedEnemyFactory : EnemyFactory
-{
-    public override Enemy CreateEnemy()
-    {
-        return new RedEnemy(Resources.instance.GetRandomFloat(1, 51));
+        public override Weapon CreateWeapon(Transform origin)
+        {
+            return new Fist(origin);
+        }
     }
 
-    public override Weapon CreateWeapon()
+    public class BlueEnemyFactory : EnemyFactory
     {
-        return new Fist();
-    }
-}
+        public override Enemy CreateEnemy()
+        {
+            return new BlueEnemy();
+        }
 
-public class BlueEnemyFactory : EnemyFactory
-{
-    public override Enemy CreateEnemy()
-    {
-        return new BlueEnemy(Resources.instance.GetRandomFloat(51, 101));
+        public override Weapon CreateWeapon(Transform origin)
+        {
+            return new Bat(origin);
+        }
     }
 
-    public override Weapon CreateWeapon()
+    public class Extentions
     {
-        return new Bat();
+        public static EnemyFactory GetFactoryByEnum(EEnemy enemy)
+        {
+            if (enemy == EEnemy.Red)
+                return new RedEnemyFactory();
+            else if (enemy == EEnemy.Blue)
+                return new BlueEnemyFactory();
+            else
+                return null;
+        }
     }
 }

@@ -1,12 +1,11 @@
 using UnityEngine;
 using UnityEngine.AI;
+using AbstractFactory;
 
 public class EnemyAI : MonoBehaviour
 {    
     [SerializeField]
     private EEnemy enemy;
-    [SerializeField]
-    private float reAssignHealth = -0.01f, reAssignChaseDistance = -0.01f;
 
     private Transform target;
     private NavMeshAgent agent;
@@ -21,20 +20,11 @@ public class EnemyAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         target = GameObject.Find("Player").transform;
         InvokeRepeating(nameof(GetPathRemainingDistance), 1f, 1f);
-        EnemyFactory factory;
-        if (enemy == EEnemy.Red)
-            factory = new RedEnemyFactory();
-        else if (enemy == EEnemy.Blue)
-            factory = new BlueEnemyFactory();
-        else
-            return;
+
+        EnemyFactory factory = Extentions.GetFactoryByEnum(enemy);
 
         enemyType = factory.CreateEnemy();
-        weapon = factory.CreateWeapon();
-        if (reAssignChaseDistance > 0f)
-            enemyType.ChaseDistance = reAssignChaseDistance;
-        if (reAssignHealth > 0f)
-            enemyType.Health = reAssignHealth;
+        weapon = factory.CreateWeapon(transform);
 
         ApplyVisuals();
     }
@@ -44,7 +34,7 @@ public class EnemyAI : MonoBehaviour
         if (enemyType == null)
             return;
 
-        GetComponent<MeshRenderer>().materials[0].color = enemyType.EnemyColor;
+        GetComponent<MeshRenderer>().materials[0].color = enemyType.stats.EnemyColor;
     }
 
     public void GetPathRemainingDistance()
@@ -75,11 +65,11 @@ public class EnemyAI : MonoBehaviour
     private void FixedUpdate()
     {
         agent.SetDestination(target.position);
-        if (currentDistance > enemyType.ChaseDistance) {
+        if (currentDistance > enemyType.stats.ChaseDistance) {
             agent.speed = 0f;
             return;
         }
-        agent.speed = 5f;
+        agent.speed = enemyType.stats.Speed;
     }
 
 }
