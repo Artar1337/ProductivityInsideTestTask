@@ -27,7 +27,7 @@ public class PlayerStats : MonoBehaviour, IObservable
     [SerializeField]
     private Color normalColor, rageColor;
 
-    private List<IObserver> observers = new List<IObserver>();
+    private HashSet<EnemyObserver> observers = new HashSet<EnemyObserver>();
 
     public float Health { get => health; set => health = value; }
     public float Speed { get => inRageMode ? rageSpeed : speed; set => speed = value; }
@@ -38,6 +38,17 @@ public class PlayerStats : MonoBehaviour, IObservable
     private void Start()
     {
         renderer = GetComponent<MeshRenderer>();
+    }
+
+    public void RecieveHit(float damage)
+    {
+        health -= damage;
+        Debug.Log("player's hp: " + health);
+        if (health < 0f)
+        {
+            GetComponent<CharacterController>().enabled = false;
+            GameManager.instance.GameOver();
+        }
     }
 
     public void EnterRageMode()
@@ -59,12 +70,12 @@ public class PlayerStats : MonoBehaviour, IObservable
 
     public void RegisterObserver(IObserver o)
     {
-        observers.Add(o);
+        observers.Add((EnemyObserver)o);
     }
 
     public void RemoveObserver(IObserver o)
     {
-        observers.Remove(o);
+        observers.Remove((EnemyObserver)o);
     }
 
     public void NotifyObservers()

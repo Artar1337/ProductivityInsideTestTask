@@ -18,6 +18,4 @@ public class ScriptableStats : ScriptableObject
     [SerializeField]
     private new string name;
     public string Name { get => name; set => name = value; }
-    private bool isDead = false;
-    public bool IsDead { get => isDead; set => isDead = value; }
 }

@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 4577062254172956592}
   - component: {fileID: 4577062254172956595}
   - component: {fileID: 4577062254172956599}
+  - component: {fileID: 2370589716757364115}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -164,3 +165,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 1285107606265445615, guid: 05ad72f0f97f9f6428ea5cabce6ccfda, type: 3}
+--- !u!136 &2370589716757364115
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4577062254172956597}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}

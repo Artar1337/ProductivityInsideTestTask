@@ -12,4 +12,6 @@ public class ScriptableWeapon : ScriptableObject
     [SerializeField]
     private new string name;
     public string Name { get => name; set => name = value; }
+
+    public GameObject hitParticles;
 }

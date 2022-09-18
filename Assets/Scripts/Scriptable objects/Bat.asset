@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Bat
   m_EditorClassIdentifier: 
   damage: 25
-  range: 5
+  range: 1.55
   name: Bat
+  hitParticles: {fileID: 7247325888111321180, guid: bc6d7fb7f5efab740953ba16cf17e184, type: 3}

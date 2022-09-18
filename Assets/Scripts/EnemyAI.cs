@@ -13,6 +13,7 @@ public class EnemyAI : MonoBehaviour
     private Enemy enemyType;
     private Weapon weapon;
     private EnemyObserver observer;
+    private int skipUpdate = 0;
 
     private float currentDistance = float.MaxValue;
 
@@ -25,13 +26,15 @@ public class EnemyAI : MonoBehaviour
         spawnPoint = Instantiate(tmp, transform.parent);
         Destroy(tmp.gameObject);
         player = target;
-        InvokeRepeating(nameof(GetPathRemainingDistance), 1f, 1f);
+        InvokeRepeating(nameof(GetPathRemainingDistance), 
+             Resources.instance.GetRandomFloat(0.1f, 1f),
+             1f);
 
         EnemyFactory factory = Extentions.GetFactoryByEnum(enemy);
-        observer = new EnemyObserver(transform, PlayerStats.instance);
+        observer = new EnemyObserver(transform);
         PlayerStats.instance.RegisterObserver(observer);
 
-        enemyType = factory.CreateEnemy();
+        enemyType = factory.CreateEnemy(transform);
         weapon = factory.CreateWeapon(transform);
 
         ApplyVisuals();
@@ -43,6 +46,7 @@ public class EnemyAI : MonoBehaviour
             return;
 
         GetComponent<MeshRenderer>().materials[0].color = enemyType.stats.EnemyColor;
+        GetComponent<CapsuleCollider>().radius *= weapon.weapon.Range;
     }
 
     public void GetPathRemainingDistance()
@@ -80,9 +84,27 @@ public class EnemyAI : MonoBehaviour
         target = spawnPoint;
     }
 
+    public void AttackPlayer()
+    {
+        weapon.Hit();
+        PlayerStats.instance.RecieveHit(weapon.weapon.Damage);
+        AvoidPlayer();
+        // skipping 50 updates
+        skipUpdate = 50;
+    }
+
     private void FixedUpdate()
     {
         agent.SetDestination(target.position);
+        
+        if (skipUpdate > 0) 
+        {
+            skipUpdate--;
+            if (skipUpdate <= 0)
+                FollowPlayer();
+            return;
+        }
+
         if (currentDistance > enemyType.stats.ChaseDistance) {
             agent.speed = 0f;
             return;
@@ -90,4 +112,19 @@ public class EnemyAI : MonoBehaviour
         agent.speed = enemyType.stats.Speed;
     }
 
+    public void StopObserve()
+    {
+        PlayerStats.instance.RemoveObserver(observer);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            if (PlayerStats.instance.InRageMode)
+                enemyType.RecieveHit(PlayerStats.instance.Damage);
+            else
+                AttackPlayer();
+        }
+    }
 }

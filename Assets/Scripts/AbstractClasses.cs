@@ -17,13 +17,11 @@ namespace Observer
 
     public class EnemyObserver : IObserver
     {
-        IObservable player;
         Transform self;
 
-        public EnemyObserver(Transform self, IObservable player)
+        public EnemyObserver(Transform self)
         {
             this.self = self;
-            this.player = player;
         }
 
         public void Update(Object ob)
@@ -35,11 +33,6 @@ namespace Observer
                 return;
             }
             FollowPlayer();
-        }
-
-        public void StopObserve()
-        {
-            player.RemoveObserver(this);
         }
 
         public void AvoidPlayer()
@@ -71,13 +64,19 @@ namespace AbstractFactory {
     public abstract class Enemy
     {
         public ScriptableStats stats;
+        protected float health;
+        private bool isDead = false;
+        public bool IsDead { get => isDead; }
 
         public void RecieveHit(float value)
         {
-            stats.Health -= value;
-            if(stats.Health <= 0)
+            if (isDead)
+                return;
+            health -= value;
+            Debug.Log("enemy's hp: " + health);
+            if (health <= 0)
             {
-                stats.IsDead = true;
+                isDead = true;
                 Death();
             }
         }
@@ -87,70 +86,88 @@ namespace AbstractFactory {
 
     public class Fist : Weapon
     {
+        Transform self;
         public Fist(Transform origin)
         {
             weapon = Resources.instance.GetWeaponByName("Fist");
+            self = origin;
         }
 
         public override void Hit()
         {
             // hits the fist, no weapon shown
-
+            // no swoosh...
+            GameObject.Instantiate(weapon.hitParticles, self.transform.position, self.transform.rotation);
         }
     }
 
     public class Bat : Weapon
     {
+        Transform self;
+        WeaponInstantiator weaponHandler;
         public Bat(Transform origin)
         {
             weapon = Resources.instance.GetWeaponByName("Bat");
-            origin.GetComponent<WeaponInstantiator>().InstantiateWeapon();
+            weaponHandler = origin.GetComponent<WeaponInstantiator>();
+            weaponHandler.InstantiateWeapon();
+            self = origin;
         }
 
         public override void Hit()
         {
             // hits the bat, weapon shown
-
+            weaponHandler.WeaponSwoosh();
+            GameObject.Instantiate(weapon.hitParticles, self.transform.position, self.transform.rotation);
         }
     }
 
     public class RedEnemy : Enemy
     {
-        public RedEnemy()
+        Transform self;
+        public RedEnemy(Transform self)
         {
+            this.self = self;
             stats = Resources.instance.GetStatsByName("RedEnemy");
+            health = stats.Health;
         }
 
         public override void Death()
         {
             Debug.Log("Cringanyl");
+            self.GetComponent<EnemyAI>().StopObserve();
+            MonoBehaviour.Destroy(self.gameObject);
         }
     }
 
     public class BlueEnemy : Enemy
     {
-        public BlueEnemy()
+        Transform self;
+        public BlueEnemy(Transform self)
         {
+            this.self = self;
             stats = Resources.instance.GetStatsByName("BlueEnemy");
+            health = stats.Health;
         }
 
         public override void Death()
         {
             Debug.Log("Slovil cringe");
+            self.GetComponent<EnemyAI>().StopObserve();
+            MonoBehaviour.Destroy(self.gameObject);
         }
     }
 
     public abstract class EnemyFactory
     {
-        public abstract Enemy CreateEnemy();
+        public abstract Enemy CreateEnemy(Transform origin);
         public abstract Weapon CreateWeapon(Transform origin);
     }
 
     public class RedEnemyFactory : EnemyFactory
     {
-        public override Enemy CreateEnemy()
+        public override Enemy CreateEnemy(Transform origin)
         {
-            return new RedEnemy();
+            return new RedEnemy(origin);
         }
 
         public override Weapon CreateWeapon(Transform origin)
@@ -161,9 +178,9 @@ namespace AbstractFactory {
 
     public class BlueEnemyFactory : EnemyFactory
     {
-        public override Enemy CreateEnemy()
+        public override Enemy CreateEnemy(Transform origin)
         {
-            return new BlueEnemy();
+            return new BlueEnemy(origin);
         }
 
         public override Weapon CreateWeapon(Transform origin)

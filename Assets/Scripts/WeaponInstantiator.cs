@@ -6,10 +6,17 @@ public class WeaponInstantiator : MonoBehaviour
 {
     [SerializeField]
     private GameObject weapon;
+    private Animator weaponAnimator;
+
 
     public void InstantiateWeapon()
     {
         if (weapon != null)
-            Instantiate(weapon, transform);
+            weaponAnimator = Instantiate(weapon, transform).GetComponent<Animator>();
+    }
+
+    public void WeaponSwoosh()
+    {
+        weaponAnimator.SetTrigger("Hit");
     }
 }
