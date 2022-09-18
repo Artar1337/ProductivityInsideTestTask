@@ -1,4 +1,58 @@
+using System.Collections.Generic;
 using UnityEngine;
+
+namespace Observer
+{
+    public interface IObserver
+    {
+        void Update(Object ob);
+    }
+
+    public interface IObservable
+    {
+        void RegisterObserver(IObserver o);
+        void RemoveObserver(IObserver o);
+        void NotifyObservers();
+    }
+
+    public class EnemyObserver : IObserver
+    {
+        IObservable player;
+        Transform self;
+
+        public EnemyObserver(Transform self, IObservable player)
+        {
+            this.self = self;
+            this.player = player;
+        }
+
+        public void Update(Object ob)
+        {
+            PlayerStats stats = (PlayerStats)(ob);
+            if (stats.InRageMode)
+            {
+                AvoidPlayer();
+                return;
+            }
+            FollowPlayer();
+        }
+
+        public void StopObserve()
+        {
+            player.RemoveObserver(this);
+        }
+
+        public void AvoidPlayer()
+        {
+            self.GetComponent<EnemyAI>().AvoidPlayer();
+        }
+
+        public void FollowPlayer()
+        {
+            self.GetComponent<EnemyAI>().FollowPlayer();
+        }
+    }
+}
 
 namespace AbstractFactory { 
 

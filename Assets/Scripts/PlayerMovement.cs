@@ -8,9 +8,6 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController controller;
     private CameraFollow followingCamera;
 
-    [SerializeField]
-    private float speed = 1f;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -28,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
         float z = Input.GetAxis("Vertical");
 
         Vector3 move = (transform.right * x + transform.forward * z);
-        controller.Move(move * speed * Time.deltaTime);
+        controller.Move(move * PlayerStats.instance.Speed * Time.deltaTime);
         followingCamera.UpdatePosition(transform.position);
     }
 }

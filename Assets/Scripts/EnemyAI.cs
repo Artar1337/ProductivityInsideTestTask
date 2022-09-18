@@ -1,16 +1,18 @@
 using UnityEngine;
 using UnityEngine.AI;
 using AbstractFactory;
+using Observer;
 
 public class EnemyAI : MonoBehaviour
 {    
     [SerializeField]
     private EEnemy enemy;
 
-    private Transform target;
+    private Transform player, spawnPoint, target;
     private NavMeshAgent agent;
     private Enemy enemyType;
     private Weapon weapon;
+    private EnemyObserver observer;
 
     private float currentDistance = float.MaxValue;
 
@@ -18,10 +20,14 @@ public class EnemyAI : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        target = GameObject.Find("Player").transform;
+        target = PlayerStats.instance.transform;
+        spawnPoint = Instantiate(new GameObject("SpawnPoint").transform, transform.parent);
+        player = target;
         InvokeRepeating(nameof(GetPathRemainingDistance), 1f, 1f);
 
         EnemyFactory factory = Extentions.GetFactoryByEnum(enemy);
+        observer = new EnemyObserver(transform, PlayerStats.instance);
+        PlayerStats.instance.RegisterObserver(observer);
 
         enemyType = factory.CreateEnemy();
         weapon = factory.CreateWeapon(transform);
@@ -60,6 +66,16 @@ public class EnemyAI : MonoBehaviour
         }
 
         currentDistance = distance;
+    }
+
+    public void FollowPlayer()
+    {
+        target = player;
+    }
+
+    public void AvoidPlayer()
+    {
+        target = spawnPoint;
     }
 
     private void FixedUpdate()

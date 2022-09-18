@@ -28,6 +28,8 @@ public class Resources : MonoBehaviour
 
     private Dictionary<string, ScriptableWeapon> weaponDictionary;
     private Dictionary<string, ScriptableStats> statsDictionary;
+
+    private AudioSource audioSource;
     
 
     public float GetRandomFloat(float min, float max)
@@ -51,6 +53,7 @@ public class Resources : MonoBehaviour
     void Start()
     {
         rng = new System.Random();
+        audioSource = GetComponent<AudioSource>();
         weaponDictionary = new Dictionary<string, ScriptableWeapon>();
         statsDictionary = new Dictionary<string, ScriptableStats>();
 
@@ -76,6 +79,20 @@ public class Resources : MonoBehaviour
     public ScriptableStats GetStatsByName(string name)
     {
         return statsDictionary[name];
+    }
+
+    public void PlayBackgroundMusic(AudioClip clip, bool loop = true)
+    {
+        if (audioSource.isPlaying)
+            return;
+        audioSource.loop = loop;
+        audioSource.clip = clip;
+        audioSource.Play();
+    }
+
+    public void StopMusic()
+    {
+        audioSource.Stop();
     }
 
 }
