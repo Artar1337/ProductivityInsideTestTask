@@ -1,11 +1,17 @@
 using UnityEngine;
 
+public enum EEnemy
+{
+    Red,
+    Blue
+}
+
 public abstract class Weapon
 {
     private float damage;
-    public float Damage { get => damage; protected set => damage = value; }
+    public float Damage { get => damage; set => damage = value; }
     private float range;
-    public float Range { get => range; protected set => range = value; }
+    public float Range { get => range; set => range = value; }
 
     public abstract void Hit();
 }
@@ -13,10 +19,13 @@ public abstract class Weapon
 public abstract class Enemy
 {
     private float health;
-    public float Health { get => health; protected set => health = value; }
+    public float Health { get => health; set => health = value; }
+
+    private float chaseDistance;
+    public float ChaseDistance { get => chaseDistance; set => chaseDistance = value; }
 
     private Color enemyColor;
-    public Color EnemyColor { get => enemyColor; protected set => enemyColor = value; }
+    public Color EnemyColor { get => enemyColor; set => enemyColor = value; }
 
     private bool isDead = false;
     public bool IsDead { get => isDead; }
@@ -66,10 +75,11 @@ public class Bat : Weapon
 
 public class RedEnemy : Enemy
 {
-    public RedEnemy(float heatlh)
+    public RedEnemy(float health)
     {
-        Health = heatlh;
+        Health = health;
         EnemyColor = new Color(1, 0, 0);
+        ChaseDistance = 100f;
     }
 
     public override void Death()
@@ -80,10 +90,11 @@ public class RedEnemy : Enemy
 
 public class BlueEnemy : Enemy
 {
-    public BlueEnemy(float heatlh)
+    public BlueEnemy(float health)
     {
-        Health = heatlh;
+        Health = health;
         EnemyColor = new Color(0, 0, 1);
+        ChaseDistance = 150f;
     }
 
     public override void Death()
