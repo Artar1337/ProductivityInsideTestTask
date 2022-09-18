@@ -21,7 +21,9 @@ public class EnemyAI : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         target = PlayerStats.instance.transform;
-        spawnPoint = Instantiate(new GameObject("SpawnPoint").transform, transform.parent);
+        Transform tmp = new GameObject("SpawnPoint").transform;
+        spawnPoint = Instantiate(tmp, transform.parent);
+        Destroy(tmp.gameObject);
         player = target;
         InvokeRepeating(nameof(GetPathRemainingDistance), 1f, 1f);
 

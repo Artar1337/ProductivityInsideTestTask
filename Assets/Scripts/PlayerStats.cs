@@ -42,6 +42,7 @@ public class PlayerStats : MonoBehaviour, IObservable
 
     public void EnterRageMode()
     {
+        CancelInvoke();
         inRageMode = true; 
         NotifyObservers();
         renderer.materials[0].color = rageColor;
