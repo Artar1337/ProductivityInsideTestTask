@@ -1,6 +1,9 @@
 # ProductivityInsideTestTask
 Top-down view 3D pacman-stylized game, where you must defeat all enemies!
 
+Latest build:
+https://drive.google.com/file/d/1xQPiZHH3U6X853YGdas895nHMilrB7ci/view?usp=sharing
+
 Technical task (in russian):
 Примечания к тестовому заданию: 
 • Необязательно выполнять абсолютно все пункты, разрабатывается столько сколько возможно. 
