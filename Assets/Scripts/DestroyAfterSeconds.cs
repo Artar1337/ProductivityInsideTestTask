@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+// just destroys the object aften N seconds
 
 public class DestroyAfterSeconds : MonoBehaviour
 {

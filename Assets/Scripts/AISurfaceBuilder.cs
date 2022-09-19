@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
-using UnityEngine.AI;
+
+// just rebuilts a navmesh for a random labyrinth
 
 public class AISurfaceBuilder : MonoBehaviour
 {

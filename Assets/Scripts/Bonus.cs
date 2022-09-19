@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+// activates bonus on trigger enter, depends on PlayerStats
 
 public class Bonus : MonoBehaviour
 {
@@ -21,5 +21,4 @@ public class Bonus : MonoBehaviour
             ActivateBonus();
         }
     }
-
 }

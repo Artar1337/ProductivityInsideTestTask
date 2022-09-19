@@ -1,6 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+// spawns N bonuses randomly on the map (never in the walls)
 
 public class BonusSpawner : MonoBehaviour
 {

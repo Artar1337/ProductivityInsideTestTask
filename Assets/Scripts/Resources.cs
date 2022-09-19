@@ -1,10 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// stores all scriptable objects
+// handles music, particle spawn
+// handles random generator
+
 public class Resources : MonoBehaviour
 {
-
     #region Singleton
     public static Resources instance;
 
@@ -32,7 +34,6 @@ public class Resources : MonoBehaviour
     private Dictionary<string, ScriptableStats> statsDictionary;
 
     private AudioSource audioSource;
-    
 
     public float GetRandomFloat(float min, float max)
     {
@@ -102,5 +103,4 @@ public class Resources : MonoBehaviour
     {
         audioSource.Stop();
     }
-
 }

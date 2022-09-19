@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+// user input check and moving player controller
 
 [RequireComponent (typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour

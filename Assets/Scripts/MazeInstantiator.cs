@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+// instantiates maze (depends on mazegenerator)
 
 public class MazeInstantiator : MonoBehaviour
 {

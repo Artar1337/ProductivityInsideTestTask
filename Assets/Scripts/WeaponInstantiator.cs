@@ -1,13 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+// handles weapon visuals
 
 public class WeaponInstantiator : MonoBehaviour
 {
     [SerializeField]
     private GameObject weapon;
     private Animator weaponAnimator;
-
 
     public void InstantiateWeapon()
     {

@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+// camera followng and scaling script
 
 public class CameraFollow : MonoBehaviour
 {
@@ -14,10 +14,6 @@ public class CameraFollow : MonoBehaviour
 
     [SerializeField]
     private float heightMovingSpeed = 5000f;
-
-    // need to set X and Z borders according to yBorder (can be set only in inspector window)
-    // and physical field border, represented by physicalBorder
-    //public Vector2 Xborder { get => Xborder;set=>{ } }
 
     private void Start()
     {

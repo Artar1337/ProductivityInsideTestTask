@@ -3,6 +3,10 @@ using UnityEngine.AI;
 using AbstractFactory;
 using Observer;
 
+// handles pathfinding
+// enemy's behaviour
+// attacking trigger for player and for instance of enemy
+
 public class EnemyAI : MonoBehaviour
 {    
     [SerializeField]

@@ -1,5 +1,7 @@
 using UnityEngine;
 
+// stats for enemies
+
 [CreateAssetMenu(fileName = "ScriptableStats", menuName = "Scriptables/ScriptableStats")]
 public class ScriptableStats : ScriptableObject
 {

@@ -1,12 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
+// checking ESC input
+// initiates gameover
+// handles focus event
+// controlls logic of UI buttons
+
 public class GameManager : MonoBehaviour
 {
-
     #region Singleton
     public static GameManager instance;
 
@@ -27,12 +30,10 @@ public class GameManager : MonoBehaviour
     private CharacterController player;
     private List<NavMeshAgent> enemies = new List<NavMeshAgent>();
 
-
     public bool Paused { get; private set; }
 
     public void GameOver(bool playerWon = false)
     {
-        Debug.Log("gameover");
         if (playerWon)
         {
             UIManager.instance.SetWin(true);
@@ -75,7 +76,11 @@ public class GameManager : MonoBehaviour
         if (player == null || enemies == null)
             return;
         foreach (var enemy in enemies)
-            enemy.enabled = hasFocus;
+        {
+            if (enemy != null)
+                enemy.enabled = hasFocus;
+        }
+            
         player.enabled = hasFocus;
     }
 

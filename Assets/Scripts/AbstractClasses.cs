@@ -1,6 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+// here is located observer and abstract factory pattern classes
+// did not do the decorator pattern btw
 
 namespace Observer
 {
@@ -48,8 +49,8 @@ namespace Observer
     }
 }
 
-namespace AbstractFactory { 
-
+namespace AbstractFactory 
+{ 
     public enum EEnemy
     {
         Red,
@@ -89,6 +90,7 @@ namespace AbstractFactory {
             }
         }
 
+        // there could be various deaths for example, but i don't wanna do them 
         public abstract void Death();
     }
 
@@ -139,7 +141,7 @@ namespace AbstractFactory {
 
         public override void Death()
         {
-            Debug.Log("Cringanyl");
+            Debug.Log("Red is dead");
             self.GetComponent<EnemyAI>().StopObserve();
             MonoBehaviour.Destroy(self.gameObject);
         }
@@ -157,7 +159,7 @@ namespace AbstractFactory {
 
         public override void Death()
         {
-            Debug.Log("Slovil cringe");
+            Debug.Log("Blue is dead");
             self.GetComponent<EnemyAI>().StopObserve();
             MonoBehaviour.Destroy(self.gameObject);
         }

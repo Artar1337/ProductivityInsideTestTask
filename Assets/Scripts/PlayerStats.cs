@@ -1,7 +1,10 @@
 using Observer;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+// player stats
+// also main observable for EnemyAI
+// handles hit from enemy, rage bonus mode
 
 public class PlayerStats : MonoBehaviour, IObservable
 {
@@ -43,7 +46,6 @@ public class PlayerStats : MonoBehaviour, IObservable
     public void RecieveHit(float damage)
     {
         health -= damage;
-        Debug.Log("player's hp: " + health);
         Resources.instance.SpawnParticles(transform);
         if (health < 0f)
         {

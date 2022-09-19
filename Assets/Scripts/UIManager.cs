@@ -1,5 +1,6 @@
-using System.Collections.Generic;
 using UnityEngine;
+
+// manages UI visuals (done by SetActive(false/true), idk how to do it another way)
 
 public class UIManager : MonoBehaviour
 {
