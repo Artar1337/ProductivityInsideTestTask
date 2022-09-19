@@ -95,6 +95,9 @@ public class EnemyAI : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!agent.enabled)
+            return;
+
         agent.SetDestination(target.position);
         
         if (skipUpdate > 0) 

@@ -77,6 +77,11 @@ public class PlayerStats : MonoBehaviour, IObservable
     public void RemoveObserver(IObserver o)
     {
         observers.Remove((EnemyObserver)o);
+        // no more enemies => autowin
+        if(observers.Count == 0)
+        {
+            GameManager.instance.GameOver(true);
+        }
     }
 
     public void NotifyObservers()

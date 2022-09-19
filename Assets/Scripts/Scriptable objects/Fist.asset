@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: Fist
   m_EditorClassIdentifier: 
   damage: 5
-  range: 1.34
+  range: 1
   name: Fist
-  hitParticles: {fileID: 7247325888111321180, guid: bc6d7fb7f5efab740953ba16cf17e184, type: 3}
