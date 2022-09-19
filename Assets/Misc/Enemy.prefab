@@ -152,6 +152,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: 1
+  pathRecalculateRate: 0.1
+  maxCorners: 50
 --- !u!114 &4577062254172956599
 MonoBehaviour:
   m_ObjectHideFlags: 0

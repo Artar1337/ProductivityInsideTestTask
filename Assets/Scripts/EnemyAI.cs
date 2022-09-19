@@ -11,19 +11,26 @@ public class EnemyAI : MonoBehaviour
 {    
     [SerializeField]
     private EEnemy enemy;
+    [SerializeField]
+    private float pathRecalculateRate = 0.3f;
+    [SerializeField]
+    private int maxCorners = 50;
 
     private Transform player, spawnPoint, target;
     private NavMeshAgent agent;
     private Enemy enemyType;
     private Weapon weapon;
+    private new MeshRenderer renderer;
     private EnemyObserver observer;
     private int skipUpdate = 0;
 
     private float currentDistance = float.MaxValue;
+    private bool followPlayer = true;
 
     // Start is called before the first frame update
     void Start()
     {
+        renderer = GetComponent<MeshRenderer>();
         agent = GetComponent<NavMeshAgent>();
         target = PlayerStats.instance.transform;
         Transform tmp = new GameObject("SpawnPoint").transform;
@@ -31,8 +38,8 @@ public class EnemyAI : MonoBehaviour
         Destroy(tmp.gameObject);
         player = target;
         InvokeRepeating(nameof(GetPathRemainingDistance), 
-             Resources.instance.GetRandomFloat(0.1f, 1f),
-             1f);
+             Resources.instance.GetRandomFloat(0f, 1f),
+             pathRecalculateRate);
 
         EnemyFactory factory = Extentions.GetFactoryByEnum(enemy);
         observer = new EnemyObserver(transform);
@@ -63,7 +70,7 @@ public class EnemyAI : MonoBehaviour
             return;
         }
 
-        if (!float.IsInfinity(agent.remainingDistance))
+        if (!float.IsInfinity(agent.remainingDistance) || agent.path.corners.Length > maxCorners)
         {
             currentDistance = agent.remainingDistance;
             return;
@@ -81,11 +88,15 @@ public class EnemyAI : MonoBehaviour
     public void FollowPlayer()
     {
         target = player;
+        followPlayer = true;
+        Color c = renderer.materials[0].color;
+        renderer.materials[0].color = new Color(c.r, c.g, c.b, 1f);
     }
 
     public void AvoidPlayer()
     {
         target = spawnPoint;
+        followPlayer = false;
     }
 
     public void AttackPlayer()
@@ -103,6 +114,12 @@ public class EnemyAI : MonoBehaviour
             return;
 
         agent.SetDestination(target.position);
+
+        if (!followPlayer && Mathf.Abs(agent.remainingDistance) < 0.2f && target == spawnPoint)
+        {
+            Color c = renderer.materials[0].color;
+            renderer.materials[0].color = new Color(c.r, c.g, c.b, 0.05f);
+        }
         
         if (skipUpdate > 0) 
         {
