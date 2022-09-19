@@ -259,6 +259,7 @@ MonoBehaviour:
   stats:
   - {fileID: 11400000, guid: c9e6839d65e7027479e98d92d75438ce, type: 2}
   - {fileID: 11400000, guid: ed9e32d9d704ae841b8d4d2aa5391c64, type: 2}
+  hitParticles: {fileID: 7247325888111321180, guid: bc6d7fb7f5efab740953ba16cf17e184, type: 3}
 --- !u!4 &215140627
 Transform:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -64,15 +65,22 @@ namespace AbstractFactory {
     public abstract class Enemy
     {
         public ScriptableStats stats;
+        Transform self;
         protected float health;
         private bool isDead = false;
         public bool IsDead { get => isDead; }
+
+        public Enemy(Transform self)
+        {
+            this.self = self;
+        }
 
         public void RecieveHit(float value)
         {
             if (isDead)
                 return;
             health -= value;
+            Resources.instance.SpawnParticles(self);
             Debug.Log("enemy's hp: " + health);
             if (health <= 0)
             {
@@ -97,7 +105,6 @@ namespace AbstractFactory {
         {
             // hits the fist, no weapon shown
             // no swoosh...
-            GameObject.Instantiate(weapon.hitParticles, self.transform.position, self.transform.rotation);
         }
     }
 
@@ -117,14 +124,13 @@ namespace AbstractFactory {
         {
             // hits the bat, weapon shown
             weaponHandler.WeaponSwoosh();
-            GameObject.Instantiate(weapon.hitParticles, self.transform.position, self.transform.rotation);
         }
     }
 
     public class RedEnemy : Enemy
     {
         Transform self;
-        public RedEnemy(Transform self)
+        public RedEnemy(Transform self) : base(self)
         {
             this.self = self;
             stats = Resources.instance.GetStatsByName("RedEnemy");
@@ -142,7 +148,7 @@ namespace AbstractFactory {
     public class BlueEnemy : Enemy
     {
         Transform self;
-        public BlueEnemy(Transform self)
+        public BlueEnemy(Transform self) : base(self)
         {
             this.self = self;
             stats = Resources.instance.GetStatsByName("BlueEnemy");

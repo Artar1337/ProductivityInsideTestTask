@@ -25,6 +25,8 @@ public class Resources : MonoBehaviour
     private ScriptableWeapon[] weapons;
     [SerializeField]
     private ScriptableStats[] stats;
+    [SerializeField]
+    private GameObject hitParticles;
 
     private Dictionary<string, ScriptableWeapon> weaponDictionary;
     private Dictionary<string, ScriptableStats> statsDictionary;
@@ -69,6 +71,12 @@ public class Resources : MonoBehaviour
 
         weapons = null;
         stats = null;
+    }
+
+    // instantiate on hit receiver
+    public void SpawnParticles(Transform root)
+    {
+        Instantiate(hitParticles, root.transform.position + hitParticles.transform.position, root.transform.rotation);
     }
 
     public ScriptableWeapon GetWeaponByName(string name)

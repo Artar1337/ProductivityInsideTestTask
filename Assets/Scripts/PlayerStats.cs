@@ -44,6 +44,7 @@ public class PlayerStats : MonoBehaviour, IObservable
     {
         health -= damage;
         Debug.Log("player's hp: " + health);
+        Resources.instance.SpawnParticles(transform);
         if (health < 0f)
         {
             GetComponent<CharacterController>().enabled = false;
